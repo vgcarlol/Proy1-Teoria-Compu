@@ -52,11 +52,13 @@ def main():
         print(f"\n[Expresión {idx + 1}/{len(expressions)}] Procesando: {regex} con la cadena: {string}")
         
         try:
-            # 1. Convertir expresión regular infix a postfix
+            # 1. Shunting Yard para transformar de infix a postfix
+            print("---- Shunting Yard: Transformar de infix a postfix ----")
             postfix = infix_to_postfix(regex)
             print(f"  Postfix: {postfix}")
             
-            # 2. Construir el AFN utilizando el algoritmo de Thompson
+            # 2. Generación de AFN con Thompson
+            print("---- Generación de AFN con Thompson ----")
             afn = construct_afn(postfix)
             print(f"  AFN construido. Generando imagen...")
             generate_afn_graph(afn, f'output/afn_graphs/{idx}_afn.png')
@@ -64,7 +66,8 @@ def main():
             # Depurar transiciones del AFN
             print_afn_transitions(afn)
 
-            # 3. Convertir el AFN a AFD
+            # 3. Generación de AFD con subconjuntos
+            print("---- Generación de AFD con Subconjuntos ----")
             afd = construct_afd(afn)
             print(f"  AFD construido. Generando imagen...")
             generate_afd_graph(afd, f'output/afd_graphs/{idx}_afd.png')
@@ -72,12 +75,15 @@ def main():
             # Depurar transiciones del AFD
             print_afd_transitions(afd)
 
-            # 4. Minimizar el AFD
+            # 4. Minimización de AFD
+            print("---- Minimización de AFD ----")
             minimized_afd = minimize_afd(afd)
             print(f"  AFD minimizado. Generando imagen...")
             generate_afd_graph(minimized_afd, f'output/afd_minimized_graphs/{idx}_afd_minimized.png')
 
-            # 5. Limpiar y manejar la cadena vacía para simulación
+            # 5. Simulación de AFN y AFD
+            print("---- Simulación de AFN y AFDs ----")
+            # Limpiar y manejar la cadena vacía para simulación
             string = string.strip()
             if string in ['ε', 'Îµ']:  # Cualquier interpretación de 'ε'
                 string = ''  # Interpretar 'ε' como cadena vacía
