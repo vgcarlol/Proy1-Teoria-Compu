@@ -36,13 +36,17 @@ Este proyecto implementa un analizador léxico simple utilizando autómatas fini
 
 1. Crea un archivo de texto en la carpeta `input/` llamado `expressions.txt`.En la primera línea debe contener una expresión regular y luego se le solicitará al usuario que ingrese una cadena para evaluar
     ```
-    (a|b)*abb,
+    (a|b)*abb
     ```
-2. Ejecuta el programa principal:
+3. Ejecuta el programa principal:
+
+    Ingrese la cadena a probar: #Ingresar cadena
+
+4. Ejecuta el programa principal:
     ```
     python src/main.py
     ```
-3. Los resultados se generarán en la carpeta `output/` incluyendo las imágenes de los autómatas y los resultados de las simulaciones.
+5. Los resultados se generarán en la carpeta `output/` incluyendo las imágenes de los autómatas y los resultados de las simulaciones.
 
 ## Archivos del Proyecto
 

@@ -1,5 +1,8 @@
-#Universidad del valle de Guatemala
-#Teoría de la computación
+# Universidad del valle de Guatemala
+# Teoría de la computación
+# Proyecto 1
+# Carlos Valladares
+# Gabriel Paz
 
 from regex_functions import infixToPostfix, leerArchivo
 from afn import armarAFN, AFN

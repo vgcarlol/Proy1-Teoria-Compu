@@ -25,7 +25,7 @@ def graficarAFN(afn, i):
 def graficarAFD(afd, i, simplified = False):
     if simplified:
         dot = afd.visualize()
-        dot.render(f'output/afdsimple_{i}.gv', view=False, format='jpg')
+        dot.render(f'output/afdminimization_{i}.gv', view=False, format='jpg')
 
     else:
         dot = afd.visualize()
