@@ -34,11 +34,9 @@ Este proyecto implementa un analizador léxico simple utilizando autómatas fini
 
 ## Uso
 
-1. Crea un archivo de texto en la carpeta `input/` llamado `expressions.txt`. Cada línea debe contener una expresión regular y una cadena separadas por una coma:
+1. Crea un archivo de texto en la carpeta `input/` llamado `expressions.txt`.En la primera línea debe contener una expresión regular y luego se le solicitará al usuario que ingrese una cadena para evaluar
     ```
-    (a|b)*abb, aababb
-    a*b, ab
-    (b|a)ba, ε
+    (a|b)*abb,
     ```
 2. Ejecuta el programa principal:
     ```
@@ -50,14 +48,12 @@ Este proyecto implementa un analizador léxico simple utilizando autómatas fini
 
 - `src/`: Carpeta principal con los archivos fuente.
   - `main.py`: Archivo principal que ejecuta el proceso completo.
-  - `shunting_yard.py`: Implementación del algoritmo de Shunting Yard para convertir de infix a postfix.
-  - `thompson.py`: Construcción del AFN usando el algoritmo de Thompson.
-  - `subset_construction.py`: Conversión del AFN a AFD.
-  - `minimization.py`: Algoritmo para minimizar el AFD.
-  - `simulate_afn.py`: Simulación del AFN.
-  - `simulate_afd.py`: Simulación del AFD.
-  - `graph_generator.py`: Genera gráficos de los autómatas usando Graphviz.
-  - `file_reader.py`: Lee las expresiones regulares y cadenas desde un archivo.
+  - `regex_functions.py`: Lógica de manejo de expresiones regulares (infix a postfix).
+  - `utilidades.py`: Clases y funciones auxiliares como Stack y Node.
+  - `simulacion.py`: Funciones para simular AFN y AFD con una cadena dada.
+  - `afn.py`: Lógica para la construcción del AFN.
+  - `afd.py`: Lógica para la construcción y simplificación del AFD
+  - `graficar.py`: Funciones para graficar el AFN, AFD y AMI
 - `input/`: Carpeta que contiene el archivo de entrada `expressions.txt`.
 - `output/`: Carpeta donde se guardan las imágenes generadas de los autómatas.
 - `requirements.txt`: Lista de dependencias necesarias para el proyecto.
@@ -71,9 +67,6 @@ El proyecto utiliza `graphviz` para la generación de gráficos de los autómata
 - El símbolo `ε` representa la transición epsilon y debe ser utilizado en las expresiones regulares donde sea necesario.
 - Este proyecto se desarrolló como una práctica para aprender sobre autómatas finitos y su uso en el análisis léxico.
 
-## Contribución
-
-Si deseas contribuir a este proyecto, por favor realiza un fork del repositorio y envía un pull request con tus cambios.
 
 ## Licencia
 
