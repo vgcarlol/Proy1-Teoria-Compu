@@ -1,0 +1,11 @@
+digraph AFD {
+	A
+	B
+	D [shape=doublecircle]
+	A -> B [label=a]
+	B -> B [label=a]
+	D -> B [label=a]
+	A -> A [label=b]
+	B -> D [label=b]
+	D -> A [label=b]
+}

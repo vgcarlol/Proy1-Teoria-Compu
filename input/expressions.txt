@@ -1,8 +1,1 @@
-a,a
-a|b,a
-a|b,b
-ab,ab
-a*,aaa
-a*,ε
-(a|b)*,abab
-(a|b)*,ε
+(a|b)*ab
