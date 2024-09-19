@@ -1,7 +1,6 @@
 import random
 import copy
 
-
 def findPath(path, afnTransitions, afnAccept, string, index):
     if index < len(string):
         if (path[-1] != afnAccept) and (index < len(string)):

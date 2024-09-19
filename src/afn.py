@@ -6,7 +6,6 @@ def character(c):
     transitions = {(start, c): [accept]}
     return AFN(start, accept, transitions)
 
-
 # Algoritmo de Thompson
 
 def concatOperator(afn1, afn2):
@@ -75,12 +74,6 @@ def armarAFN(postfix):
         else:
             stack.push(character(char))
     return stack.pop()
-
-
-
-
-
-
 class AFN:
     def __init__(self, start, accept, transitions):
         self.start = start

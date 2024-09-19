@@ -27,8 +27,8 @@ def main():
 
         # Inciso 4: Formar el AFD minimizado de la regex
         print('Construcción del AFD minimizado...\n')
-        afds = minimizacion(afd)
-        graficarAFD(afds, i, True)
+        afdm = minimizacion(afd)
+        graficarAFD(afdm, i, True)
 
         while True:
             # Mostrar el regex que está siendo evaluado
@@ -47,7 +47,7 @@ def main():
 
             # Inciso 7: Simulación del AFD minimizado de la regex con la cadena
             print('Simulación del AFD minimizado')
-            print(simularAFD(afds, cadena), '\n')
+            print(simularAFD(afdm, cadena), '\n')
         
         print('##################################################################################################################')
         print('\n\n')

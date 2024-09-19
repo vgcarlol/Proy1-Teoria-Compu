@@ -1,4 +1,4 @@
-import copy  # Para deepcopy
+import copy 
 import string
 from utilidades import conjuntoToString  # Para la conversión de conjuntos a cadenas
 from graphviz import Digraph
@@ -136,10 +136,10 @@ def subconjuntos(afn):
     for i in newTransitions2:
         for j in allChars2:
             if (i[0],j) not in newTransitions2:
-                newTransitions[(i[0],j)] = 'V'
-                for k in allChars2:
-                    newTransitions[('V',k)] = 'V'
-
+               # newTransitions[(i[0],j)] = 'V'
+               # for k in allChars2:
+               #     newTransitions[('V',k)] = 'V'
+                a = 1
             else:
                 newTransitions[(i[0],j)] = newTransitions2[(i[0],j)]
     return AFD(startString,nodosAcceptance2,newTransitions)

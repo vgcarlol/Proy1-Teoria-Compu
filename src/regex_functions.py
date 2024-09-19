@@ -13,11 +13,70 @@ def leerArchivo():
             # Ignora las líneas en blanco o comentarios
             continue
 
-        # Agrega la línea como una expresión regular
-        expresiones_regulares.append(linea)
+        # Validar la expresión
+        if validarExpresion(linea):
+            # Agrega la línea como una expresión regular
+            expresiones_regulares.append(linea)
+        else:
+            print(f"Expresión inválida detectada y omitida: {linea}")
 
     return expresiones_regulares
 
+
+def validarExpresion(expresion):
+    stack = []
+    operadores_binarios = {'|', '.'}
+    operadores_unarios = {'*', '+', '?'}
+    todos_operadores = operadores_binarios.union(operadores_unarios)
+    indice = 0
+    longitud = len(expresion)
+
+    while indice < longitud:
+        char = expresion[indice]
+
+        if char == '(':
+            stack.append(char)
+
+            if indice + 1 < longitud and expresion[indice + 1] == ')':
+                print(f"Error: Paréntesis vacío en posición {indice} en la expresión '{expresion}'")
+                return False 
+        elif char == ')':
+            if not stack:
+                print(f"Error: Paréntesis de cierre sin apertura en posición {indice} en la expresión '{expresion}'")
+                return False 
+            stack.pop()
+
+        if char == '|':
+
+            if indice == 0 or expresion[indice - 1] in todos_operadores or expresion[indice - 1] == '(':
+                print(f"Error: Operador '|' sin operando izquierdo en posición {indice} en la expresión '{expresion}'")
+                return False 
+            if indice + 1 == longitud or expresion[indice + 1] in todos_operadores or expresion[indice + 1] == ')':
+                print(f"Error: Operador '|' sin operando derecho en posición {indice} en la expresión '{expresion}'")
+                return False  
+            
+        if char in operadores_binarios and char != '|':
+
+            if indice == 0 or expresion[indice - 1] in todos_operadores or expresion[indice - 1] == '(':
+                print(f"Error: Operador '{char}' sin operando izquierdo en posición {indice} en la expresión '{expresion}'")
+                return False
+
+            if indice + 1 == longitud or expresion[indice + 1] in todos_operadores or expresion[indice + 1] == ')':
+                print(f"Error: Operador '{char}' sin operando derecho en posición {indice} en la expresión '{expresion}'")
+                return False
+            
+        if char in operadores_unarios:
+            if indice == 0 or expresion[indice - 1] in todos_operadores or expresion[indice - 1] == '(':
+                print(f"Error: Operador '{char}' sin operando previo en posición {indice} en la expresión '{expresion}'")
+                return False
+
+        indice += 1
+
+    if stack:
+        print(f"Error: Paréntesis sin cerrar en la expresión '{expresion}'")
+        return False 
+
+    return True  
 
 
 def getPrecedence(char):
@@ -75,6 +134,49 @@ def shuntingYard(regex: str):
         postfix += stack.pop()                
 
     return postfix
+
+def formatRegex(regex: str) -> str:
+    allOperators = ['|', '?', '+', '*', '^']
+    binaryOperators = ['|', '^']
+    res = ''
+
+    #Cada clase se convierte en secuencia de or's
+    regexX = tranformClass(regex)
+
+    #Transformar el caracter ?
+    regexX = tranformOpt(regexX)
+
+    #Tomar en cuenta el operador '+'
+    regexX = transformPosKleene(regexX)
+
+    #Escapar el caracter backslash y escapar su si
+    regexX = escapeChars(regexX)
+
+    #Tomar en cuenta el caracter 'punto'
+    regexX = considerPeriod(regexX)
+
+    #Formato: Agregar punto de concatenación
+    escaped = False
+
+    for i in range(len(regexX)):
+        c1 = regexX[i]
+        if i+1 < len(regexX):
+            c2 = regexX[i+1]
+            res += c1
+            if c1 == '\\' and not escaped:
+                escaped = True
+                continue
+
+            if (escaped) and (c2 != ')') and (c2 not in allOperators):
+                res += '.'
+                escaped = False
+                continue
+
+            if (c1 != '(') and (c2 != ')') and (c2 not in allOperators) and (c1 not in binaryOperators) and (c1 != '\\') and (not escaped):
+                res += '.'    
+            
+    res += regexX[-1]
+    return res
 
 def tranformOpt(string):
     stack = []
@@ -189,45 +291,4 @@ def considerPeriod(regex):
     result += regex[-1]
     return result
 
-def formatRegex(regex: str) -> str:
-    allOperators = ['|', '?', '+', '*', '^']
-    binaryOperators = ['|', '^']
-    res = ''
 
-    #Cada clase se convierte en secuencia de or's
-    regexX = tranformClass(regex)
-
-    #Transformar el caracter ?
-    regexX = tranformOpt(regexX)
-
-    #Tomar en cuenta el operador '+'
-    regexX = transformPosKleene(regexX)
-
-    #Escapar el caracter backslash y escapar su si
-    regexX = escapeChars(regexX)
-
-    #Tomar en cuenta el caracter 'punto'
-    regexX = considerPeriod(regexX)
-
-    #Formato: Agregar punto de concatenación
-    escaped = False
-
-    for i in range(len(regexX)):
-        c1 = regexX[i]
-        if i+1 < len(regexX):
-            c2 = regexX[i+1]
-            res += c1
-            if c1 == '\\' and not escaped:
-                escaped = True
-                continue
-
-            if (escaped) and (c2 != ')') and (c2 not in allOperators):
-                res += '.'
-                escaped = False
-                continue
-
-            if (c1 != '(') and (c2 != ')') and (c2 not in allOperators) and (c1 not in binaryOperators) and (c1 != '\\') and (not escaped):
-                res += '.'    
-            
-    res += regexX[-1]
-    return res
