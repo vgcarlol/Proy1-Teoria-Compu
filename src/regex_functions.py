@@ -1,10 +1,24 @@
 from utilidades import Stack
 
 def leerArchivo():
-    archivo = open("input/expressions.txt", "r", encoding='utf-8')
-    datos = archivo.read()
-    archivo.close()
-    return datos.split("\n")
+    with open("input/expressions.txt", "r", encoding='utf-8') as archivo:
+        lineas = archivo.readlines()
+    
+    expresiones_regulares = []
+
+    for linea in lineas:
+        linea = linea.strip()
+
+        if not linea or linea.startswith("#"):
+            # Ignora las líneas en blanco o comentarios
+            continue
+
+        # Agrega la línea como una expresión regular
+        expresiones_regulares.append(linea)
+
+    return expresiones_regulares
+
+
 
 def getPrecedence(char):
     if char == '(':
@@ -20,7 +34,7 @@ def getPrecedence(char):
     else:
         return 6
  
-def infixToPostfix(regex: str):
+def shuntingYard(regex: str):
     formatedRegex: str = formatRegex(regex)
     
     postfix: str = ''

@@ -6,6 +6,9 @@ def character(c):
     transitions = {(start, c): [accept]}
     return AFN(start, accept, transitions)
 
+
+# Algoritmo de Thompson
+
 def concatOperator(afn1, afn2):
     transitions = afn1.transitions.copy()
 
@@ -73,19 +76,10 @@ def armarAFN(postfix):
             stack.push(character(char))
     return stack.pop()
 
-def formarSubconjunto(conjuntoActual, transitions):
-    nuevoConjunto = set(conjuntoActual) 
 
-    for i in conjuntoActual:
-        for j in transitions.keys():
-            if j[0] == i and j[1] == '': 
-                for k in transitions[(i, j[1])]:
-                    nuevoConjunto.add(k)
 
-    if nuevoConjunto != set(conjuntoActual):
-        return formarSubconjunto(nuevoConjunto, transitions)
-    else:
-        return nuevoConjunto
+
+
 
 class AFN:
     def __init__(self, start, accept, transitions):

@@ -1,57 +1,59 @@
-# Universidad del valle de Guatemala
-# Teoría de la computación
-# Proyecto 1
-# Carlos Valladares
-# Gabriel Paz
-
-from regex_functions import infixToPostfix, leerArchivo
-from afn import armarAFN, AFN
-from afd import subconjuntos, simplificarAFD, AFD
+from regex_functions import leerArchivo, shuntingYard
+from afn import armarAFN
+from afd import subconjuntos, minimizacion
 from simulacion import simularAFN, simularAFD
 from graficar import graficarAFN, graficarAFD
 
-
 def main():
-
     data = leerArchivo()
 
     for i in range(len(data)):
         print('##################################################################################################################')
         print(f'Trabajando con la regex {data[i]}\n')
 
-        #Inciso 1 Construcción infix a postfix
-        postfix = infixToPostfix(data[i])
+        # Inciso 1: Construcción infix a postfix
+        postfix = shuntingYard(data[i])
         print(f'Conversión de infix a postfix: {postfix}')
 
-        #Inciso2 formar el AFN de la regex
+        # Inciso 2: Formar el AFN de la regex
         print('Construcción del AFN...\n')
         afn = armarAFN(postfix)
-        graficarAFN(afn,i)
+        graficarAFN(afn, i)
 
-        #Inciso 3 formar el AFD de la regex
+        # Inciso 3: Formar el AFD de la regex
         print('Construcción del AFD...\n')
         afd = subconjuntos(afn)
-        graficarAFD(afd,i)
+        graficarAFD(afd, i)
 
-        #Inciso 4 formar el AFD simplificado de la regex
-        print('Construcción del AFD simplificado...\n')
-        afds = simplificarAFD(afd)
-        graficarAFD(afds,i, True)
+        # Inciso 4: Formar el AFD minimizado de la regex
+        print('Construcción del AFD minimizado...\n')
+        afds = minimizacion(afd)
+        graficarAFD(afds, i, True)
 
-        print("Ingrese la cadena a probar:")  
-        string = input()
+        while True:
+            # Mostrar el regex que está siendo evaluado
+            cadena = input(f"Ingrese una cadena para probar con la regex '{data[i]}' (o escriba 'next' para pasar a la siguiente regex): ")
 
-        #Inciso 5 Simulaciín del AFN de la regex con la cadena
-        print('Simulación del AFN')
-        print(simularAFN(afn,string), '\n')
+            if cadena.lower() == 'next':
+                break
 
-        #Inciso 6 Simulaciín del AFD de la regex con la cadena
-        print('Simulación del AFD')
-        print(simularAFD(afd,string), '\n')
+            # Inciso 5: Simulación del AFN de la regex con la cadena
+            print('Simulación del AFN')
+            print(simularAFN(afn, cadena), '\n')
 
-        #Inciso 7 Simulaciín del AFD simplificado de la regex con la cadena
-        print('Simulación del AFD simplificado')
-        print(simularAFD(afds,string), '\n')
+            # Inciso 6: Simulación del AFD de la regex con la cadena
+            print('Simulación del AFD')
+            print(simularAFD(afd, cadena), '\n')
+
+            # Inciso 7: Simulación del AFD minimizado de la regex con la cadena
+            print('Simulación del AFD minimizado')
+            print(simularAFD(afds, cadena), '\n')
+        
+        print('##################################################################################################################')
+        print('\n\n')
+        print('Finalizado con la regex', data[i])
+        print('\n\n')
+
 
 if __name__ == "__main__":
-  main()
+    main()

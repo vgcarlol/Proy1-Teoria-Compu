@@ -1,10 +1,23 @@
 import copy  # Para deepcopy
 import string
 from utilidades import conjuntoToString  # Para la conversión de conjuntos a cadenas
-from afn import formarSubconjunto  # Para formar subconjuntos en la función subconjuntos
 from graphviz import Digraph
 
 
+# Subconjuntos
+def formarSubconjunto(conjuntoActual, transitions):
+    nuevoConjunto = set(conjuntoActual) 
+
+    for i in conjuntoActual:
+        for j in transitions.keys():
+            if j[0] == i and j[1] == '': 
+                for k in transitions[(i, j[1])]:
+                    nuevoConjunto.add(k)
+
+    if nuevoConjunto != set(conjuntoActual):
+        return formarSubconjunto(nuevoConjunto, transitions)
+    else:
+        return nuevoConjunto
 
 def subconjuntos(afn):
     afnTransitions = afn.getTransitions()
@@ -131,10 +144,11 @@ def subconjuntos(afn):
                 newTransitions[(i[0],j)] = newTransitions2[(i[0],j)]
     return AFD(startString,nodosAcceptance2,newTransitions)
 
-def simplificarAFD(afd):
-    afdTransitions = afd.getTransitions()
-    afdStart = afd.getStart()
-    afdAccept = afd.getAccept()
+# Minimización
+def minimizacion(afd):
+    afdTransitions = afd.getTransitions() # Transiciones del AFD
+    afdStart = afd.getStart() # Estado inicial del AFD
+    afdAccept = afd.getAccept() # Estados de aceptación del AFD
 
     pi_0 = []
     non_accepting_states = [state for state, _ in afdTransitions.keys() if state not in afd.getAccept()]
@@ -167,7 +181,7 @@ def simplificarAFD(afd):
 
             new_partitions.extend(partitions.values())
 
-        if len(new_partitions) == len(pi_0): 
+        if len(new_partitions) == len(pi_0): # Si no hubo cambios en las particiones entonces terminar
             break
         pi_0 = new_partitions
 
@@ -183,7 +197,7 @@ def simplificarAFD(afd):
 
     pi_0 = new_partitions2
 
-    simplified_transitions = {}
+    simplified_transitions = {} # Construccion del AFD minimizado
     for char in allchars:
         for subset in pi_0:
             source_state = ','.join(subset)
@@ -203,7 +217,7 @@ def simplificarAFD(afd):
             afdStart = i[0]
 
 
-    afdAcceptFinal = []
+    afdAcceptFinal = [] # Estados de aceptación del AFD minimizado
 
     for i in simplifiedTransitions2:
         if (i[0] in afdAccept) and (i[0] not in afdAcceptFinal):
