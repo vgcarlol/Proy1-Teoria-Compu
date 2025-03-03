@@ -1,8 +1,8 @@
 digraph AFD {
-	A
+	D [shape=doublecircle]
 	B
 	C
-	D [shape=doublecircle]
+	A
 	A -> B [label=a]
 	A -> C [label=b]
 	B -> B [label=a]
